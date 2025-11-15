@@ -1,17 +1,15 @@
 // auth.service.ts
 import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
   BadRequestException,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService as NestJwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from '../users/users.service';
-import { SignUpDto } from './dto/sign-up.dto';
-import { LoginDto } from './dto/login.dto';
-import { ResetPasswordDto } from './dto/reset-password.dto';
 import { UpdateProfileDto } from 'src/users/dto/update-profile.dto';
+import { UsersService } from '../users/users.service';
+import { LoginDto } from './dto/login.dto';
+import { SignUpDto } from './dto/sign-up.dto';
 
 @Injectable()
 export class AuthService {
@@ -22,8 +20,8 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.findByEmail(email);
-    if (user && (await bcrypt.compare(password, user.passwordHash))) {
-      const { passwordHash, ...result } = user;
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const { password, ...result } = user;
       return result;
     }
     return null;
@@ -32,11 +30,14 @@ export class AuthService {
   // Local sign up: Create a new user and return a JWT
   async signUp(signUpDto: SignUpDto) {
     const existedUser = await this.usersService.findByEmail(signUpDto.email);
+    console.log("🚀 ~ AuthService ~ signUp ~ existedUser:", existedUser)
     if (existedUser) {
       throw new BadRequestException('User existed');
     }
-    const passwordHash = await bcrypt.hash(signUpDto.password, 10);
-    const user = await this.usersService.create({ ...signUpDto, passwordHash });
+    const password = await bcrypt.hash(signUpDto.password, 10);
+    console.log("🚀 ~ AuthService ~ signUp ~ password:", password)
+    const user = await this.usersService.create({ ...signUpDto, password });
+    console.log("🚀 ~ AuthService ~ signUp ~ user:", user)
     const token = this.jwtService.sign({ sub: user._id, email: user.email });
     return { user, accessToken: token };
   }
@@ -50,7 +51,11 @@ export class AuthService {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const token = this.jwtService.sign({ sub: user._id, email: user.email, role: user.role });
+    const token = this.jwtService.sign({
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+    });
     return { user, accessToken: token };
   }
 
@@ -65,9 +70,6 @@ export class AuthService {
     const token = this.jwtService.sign({ sub: user._id, email: user.email });
     return { user, accessToken: token };
   }
-
-
-
 
   async getProfile(user: any): Promise<any> {
     const res = await this.usersService.findById(user._id);

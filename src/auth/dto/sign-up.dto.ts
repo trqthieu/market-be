@@ -5,7 +5,7 @@ import { IsEmail, IsString, MinLength } from 'class-validator';
 export class SignUpDto {
   @ApiProperty()
   @IsString()
-  readonly fullName: string;
+  readonly name: string;
 
   @ApiProperty()
   @IsEmail()

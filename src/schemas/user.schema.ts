@@ -1,23 +1,22 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import mongoose from 'mongoose';
 
-export type UserDocument = User & Document; // ✅ Define and export UserDocument
+export type UserDocument = User & Document;
 
 @Schema({ timestamps: true })
 export class User {
   _id: string;
 
   @Prop({ required: true })
-  fullName: string;
+  name: string;
 
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop()
-  passwordHash: string;
+  @Prop({ required: true })
+  password: string; // hashed bcrypt password
 
-  @Prop({ required: true, enum: ['user', 'admin'], default: 'user' })
+  @Prop({ enum: ['admin', 'user'], default: 'user' })
   role: string;
 }
 

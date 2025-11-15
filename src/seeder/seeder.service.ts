@@ -18,7 +18,7 @@ export class SeederService {
       {
         email: adminEmail,
         fullName: adminName,
-        passwordHash: passwordHash,
+        password: passwordHash,
         role: 'admin',
       },
       { upsert: true, setDefaultsOnInsert: true },

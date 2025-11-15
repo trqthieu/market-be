@@ -1,22 +1,64 @@
 // src/users/dto/update-profile.dto.ts
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, IsEmail } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 export class UpdateProfileDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  fullName?: string;
+  name?: string;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  avatar?: string;
+  // @ApiProperty()
+  // @IsOptional()
+  // @IsString()
+  // avatar?: string;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
-  address?: string;
+  // @ApiProperty()
+  // @IsOptional()
+  // @IsString()
+  // address?: string;
 
   // Add other fields (e.g. phone, avatar) as needed
+}
+
+export class AddCartDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  productId: string;
+
+  @ApiProperty()
+  @IsInt()
+  @Min(1)
+  quantity: number;
+}
+export class CreateOrderDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  cartId: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  promotionCode?: string;
+}
+
+export class CartItemDto {
+  @ApiProperty()
+  productId: string;
+
+  @ApiProperty()
+  quantity: number;
+}
+
+export class UpdateCartDto {
+  @ApiProperty()
+  @IsString()
+  productId: string;
+
+  @ApiProperty()
+  @IsInt()
+  @Min(1)
+  quantity: number;
 }

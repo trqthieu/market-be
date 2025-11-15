@@ -17,7 +17,7 @@ export class PaginationQueryDto {
   limit?: number;
 
   @ApiPropertyOptional()
-  @IsOptional()
   @IsString()
-  search?: number;
+  @IsOptional()
+  search?: string;
 }
