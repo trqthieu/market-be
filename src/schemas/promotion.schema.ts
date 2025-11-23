@@ -17,14 +17,14 @@ export class Promotion {
   @Prop({ default: true })
   active: boolean;
 
+  @Prop({ default: 0 })
+  quantity: number;
+
   @Prop()
   startAt: Date;
 
   @Prop()
   endAt: Date;
-
-  @Prop({ type: Types.ObjectId, ref: 'User' })
-  usedBy: Types.ObjectId;
 }
 
 export const PromotionSchema = SchemaFactory.createForClass(Promotion);

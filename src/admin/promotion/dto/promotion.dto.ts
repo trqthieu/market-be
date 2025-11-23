@@ -7,6 +7,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  Min,
 } from 'class-validator';
 
 export class CreatePromotionDto {
@@ -25,6 +26,12 @@ export class CreatePromotionDto {
   @IsNumber()
   @IsNotEmpty()
   discountValue: number;
+
+  @ApiProperty()
+  @IsNumber()
+  @IsNotEmpty()
+  @Min(1)
+  quantity: number;
 
   @ApiProperty({ required: false })
   // @IsDateString()

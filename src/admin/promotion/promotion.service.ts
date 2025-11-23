@@ -36,7 +36,6 @@ export class PromotionService {
         .sort({ createdAt: 'desc' })
         .skip(skip)
         .limit(limit)
-        .populate('usedBy')
         .exec(),
       this.model.countDocuments(searchQuery),
     ]);
@@ -50,7 +49,7 @@ export class PromotionService {
   }
 
   async findOne(id: string) {
-    const p = await this.model.findById(id).populate('usedBy').exec();
+    const p = await this.model.findById(id).exec();
     if (!p) throw new NotFoundException('Promotion not found');
     return p;
   }

@@ -104,4 +104,9 @@ export class UsersController {
   getOrderStatus(@Req() req, @Param('id') id: string) {
     return this.usersService.getOrderStatus(req.user.id, id);
   }
+
+  @Get('promotions')
+  getPromotions(@Req() req) {
+    return this.usersService.getPromotions();
+  }
 }

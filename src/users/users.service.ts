@@ -288,10 +288,12 @@ export class UsersService {
     let promotionId: Types.ObjectId | null = null;
 
     if (dto.promotionCode) {
-      // Find promotion by code and active
       const promotion = await this.promotionModel.findOne({
         code: dto.promotionCode,
         active: true,
+        startAt: { $lte: new Date() },
+        endAt: { $gte: new Date() },
+        quantity: { $gt: 0 },
       });
       if (!promotion) {
         throw new BadRequestException('Promotion not valid or already used');
@@ -304,9 +306,10 @@ export class UsersService {
         discountAmount = promotion.discountValue;
       }
 
-      // Update promotion to inactive and set usedBy
-      promotion.active = false;
-      (promotion as any).usedBy = new Types.ObjectId(userId); // add usedBy field
+      promotion.quantity = promotion.quantity - 1;
+      if (promotion.quantity <= 0) {
+        promotion.active = false;
+      }
       await promotion.save();
 
       promotionId = new Types.ObjectId(`${promotion._id}`);
@@ -358,5 +361,16 @@ export class UsersService {
     });
     if (!order) throw new BadRequestException('Order not found');
     return { orderId: order._id, status: order.status };
+  }
+
+  async getPromotions() {
+    return this.promotionModel
+      .find({
+        active: true,
+        startAt: { $lte: new Date() },
+        endAt: { $gte: new Date() },
+        quantity: { $gt: 0 },
+      })
+      .sort({ createdAt: -1 });
   }
 }
