@@ -38,6 +38,19 @@ export class CreateOrderDto {
   @IsNotEmpty()
   cartId: string;
 
+  @ApiProperty()
+  @IsString()
+  phone: string;
+
+  @ApiProperty()
+  @IsString()
+  address: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  note?: string;
+
   @ApiProperty({ required: false })
   @IsString()
   @IsOptional()

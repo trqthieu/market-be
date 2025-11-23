@@ -45,6 +45,15 @@ export class Order {
     default: 'pending',
   })
   status: string;
+
+  @Prop({ required: true })
+  address: string;
+
+  @Prop({ required: true })
+  phone: string;
+
+  @Prop()
+  note: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
