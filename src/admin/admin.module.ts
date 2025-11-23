@@ -14,6 +14,7 @@ import { ProductService } from './product/product.service';
 import { AdminUserService } from './user/admin-user.service';
 import { PromotionService } from './promotion/promotion.service';
 import { AdminOrderService } from './order/admin-order.service';
+import { EmbeddingService } from 'src/ai/embedding.service';
 
 @Module({
   imports: [
@@ -35,6 +36,8 @@ import { AdminOrderService } from './order/admin-order.service';
     AdminUserService,
     PromotionService,
     AdminOrderService,
+    EmbeddingService
   ],
+  exports: [ProductService],
 })
 export class AdminModule {}

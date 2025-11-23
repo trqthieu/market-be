@@ -22,6 +22,9 @@ export class Product {
 
   @Prop([String])
   images: string[];
+
+  @Prop([Number])
+  embedding: number[];
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

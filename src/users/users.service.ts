@@ -9,7 +9,11 @@ import * as bcrypt from 'bcrypt';
 import { Model, Types } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 
-import { AddCartDto, UpdateProfileDto } from './dto/update-profile.dto';
+import {
+  AddCartDto,
+  CreateOrderDto,
+  UpdateProfileDto,
+} from './dto/update-profile.dto';
 import { Product, ProductDocument } from 'src/schemas/product.schema';
 import { Cart, CartDocument } from 'src/schemas/cart.schema';
 import { Order, OrderDocument } from 'src/schemas/order.schema';
@@ -261,10 +265,7 @@ export class UsersService {
   //   return this.orderModel.findById(order._id).populate('items.productId');
   // }
 
-  async createOrder(
-    userId: string,
-    dto: { cartId: string; promotionCode?: string },
-  ) {
+  async createOrder(userId: string, dto: CreateOrderDto) {
     const cart = await this.cartModel
       .findById(dto.cartId)
       .populate('items.productId');
@@ -325,6 +326,9 @@ export class UsersService {
       total,
       status: 'pending',
       promotionId,
+      address: dto.address,
+      phone: dto.phone,
+      note: dto.note,
     });
 
     // Remove cart atomically

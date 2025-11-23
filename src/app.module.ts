@@ -6,6 +6,7 @@ import { SeederModule } from './seeder/seeder.module';
 import { AdminModule } from './admin/admin.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { AIModule } from './ai/ai.module';
 
 dotenv.config();
 
@@ -16,7 +17,8 @@ dotenv.config();
     SeederModule,
     AdminModule,
     UsersModule,
-    AuthModule
+    AuthModule,
+    AIModule
   ],
 })
 export class AppModule {}
